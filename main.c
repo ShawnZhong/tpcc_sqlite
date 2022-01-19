@@ -120,6 +120,7 @@ int main( int argc, char *argv[] )
   int fd, seed;
 
   printf("CHECKING IF SQLITE IS THREADSAFE: RETURN VALUE = %d\n", sqlite3_threadsafe());
+  sqlite3_vfs_register(sqlite3_vfs_find("unix-none"), 1);
   
   printf("***************************************\n");
   printf("*** ###easy### TPC-C Load Generator ***\n");
@@ -128,7 +129,7 @@ int main( int argc, char *argv[] )
   /* initialize */
   hist_init();
   activate_transaction = 1;
-  counting_on = 0;
+  counting_on = 1;
 
   for ( i=0; i<5; i++ ){
     success[i]=0;
@@ -677,7 +678,7 @@ int thread_main (thread_arg* arg)
   sqlite3_open(db_path, &sqlite3_db);
   printf("%s: opened db, thread id = %lu\n", __func__, pthread_self());
 
-  sqlite3_exec(sqlite3_db, "PRAGMA journal_mode = WAL;", 0, 0, 0);
+  sqlite3_exec(sqlite3_db, "PRAGMA journal_mode = OFF;", 0, 0, 0);
   
   if(!sqlite3_db) {
     goto sqlerr;
