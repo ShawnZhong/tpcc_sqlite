@@ -95,6 +95,7 @@ long clk_tck;
 int is_local = 0; /* "1" mean local */
 int valuable_flg = 0; /* "1" mean valuable ratio */
 
+const char* db_path = "tpcc.db";
 
 typedef struct
 {
@@ -158,7 +159,7 @@ int main( int argc, char *argv[] )
 
   /* Parse args */
 
-    while ( (c = getopt(argc, argv, "w:c:r:l:i:m:o:t:0:1:2:3:4:")) != -1) {
+    while ( (c = getopt(argc, argv, "w:c:r:l:i:m:o:t:d:0:1:2:3:4:")) != -1) {
         switch (c) {
         case 'w':
             printf ("option w with value '%s'\n", optarg);
@@ -191,6 +192,10 @@ int main( int argc, char *argv[] )
         case 'i':
             printf ("option i with value '%s'\n", optarg);
             PRINT_INTERVAL = atoi(optarg);
+            break;
+        case 'd':
+            printf ("option d with value '%s'\n", optarg);
+            db_path = optarg;
             break;
         case '0':
             printf ("option 0 (response time limit for transaction 0) '%s'\n", optarg);
@@ -669,7 +674,7 @@ int thread_main (thread_arg* arg)
   
   /* exec sql connect :connect_string; */
   printf("%s: opening db, thread id = %lu\n", __func__, pthread_self());
-  sqlite3_open("/mnt/pmem_emul/tpcc.db", &sqlite3_db);
+  sqlite3_open(db_path, &sqlite3_db);
   printf("%s: opened db, thread id = %lu\n", __func__, pthread_self());
 
   sqlite3_exec(sqlite3_db, "PRAGMA journal_mode = WAL;", 0, 0, 0);

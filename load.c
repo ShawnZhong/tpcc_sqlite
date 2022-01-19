@@ -42,6 +42,8 @@ int             i;
 int             option_debug = 0;	/* 1 if generating debug output    */
 int             is_local = 1;           /* "1" mean local */
 
+const char* db_path = "tpcc.db";
+
 #define DB_STRING_MAX 51
 
 int
@@ -84,7 +86,7 @@ main(argc, argv)
 
   /* Parse args */
 
-    while ( (c = getopt(argc, argv, "w:l:m:n:")) != -1) {
+    while ( (c = getopt(argc, argv, "w:l:m:n:d:")) != -1) {
         switch (c) {
         case 'w':
             printf ("option w with value '%s'\n", optarg);
@@ -102,6 +104,10 @@ main(argc, argv)
         case 'n':
             printf ("option n with value '%s'\n", optarg);
             max_ware = atoi(optarg);
+            break;
+        case 'd':
+            printf ("option d with value '%s'\n", optarg);
+            db_path = optarg;
             break;
         case '?':
     	    printf("Usage: tpcc_load -w warehouses -m min_wh -n max_wh\n");
@@ -151,7 +157,7 @@ main(argc, argv)
 
     /* EXEC SQL WHENEVER SQLERROR GOTO Error_SqlCall; */
 
-    sqlite3_open("/mnt/pmem_emul/tpcc.db", &sqlite);
+    sqlite3_open(db_path, &sqlite);
     if(!sqlite) {
 	    printf("%s: Failed to open DB\n", __func__);
     }
