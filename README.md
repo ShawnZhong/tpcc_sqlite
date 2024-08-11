@@ -1,4 +1,11 @@
-Port from [SplitFS benchmark](https://github.com/utsaslab/SplitFS/tree/master/tpcc-sqlite).
+Source code for the TPC-C experiment in [MadFS](https://github.com/ShawnZhong/MadFS)
+
+The original codebase is written for MySQL: https://github.com/Percona-Lab/tpcc-mysql/tree/master/src. 
+
+It has been ported to use SQLite as the backend by [Rohan Kadekodi](https://github.com/rohankadekodi). See
+
+- https://github.com/utsaslab/SplitFS/tree/master/tpcc-sqlite
+- https://github.com/rohankadekodi/tpcc-sqlite
 
 Usage:
 
